@@ -17,13 +17,13 @@ fn main() {
         .expect("Please give me a correct string number.");
 
     while count < num_students {
-        println!("Mark {}: ", count + 1);
+        println!("Mark for Student {}: ", count + 1);
 
         let mut mark: String = String::new();
 
         io::stdin()
             .read_line(&mut mark)
-            .expect("Failed to read line");
+            .expect("Failed to read the mark!");
 
         let mark: i32 = match mark.trim().parse() {
             Ok(num) => num,
@@ -35,23 +35,30 @@ fn main() {
         marks.push(mark);
         count += 1;
     }
-    let average_mark: f64 = calculate_average(&marks);
+
+    let total_mark: i32 = calculate_total(&marks);
+    let average_mark: f32 = calculate_average(&marks);
     println!("Here is the list of marks: {:?}", marks);
+    println!("Total mark for the class: {}", total_mark);
     println!("Average mark for the class: {}", average_mark);
     display_student_marks(&marks, average_mark);
 }
 
-fn calculate_average(list_of_marks: &Vec<i32>) -> f64 {
-    let total_marks = list_of_marks.into_iter().fold(0, |a, b| a + b);
-    return total_marks as f64 / list_of_marks.len() as f64;
+fn calculate_total(list_of_marks: &Vec<i32>) -> i32 {
+    return list_of_marks.into_iter().fold(0, |a, b| a + b);
 }
 
-fn display_student_marks(marks: &Vec<i32>, class_average: f64) {
+fn calculate_average(list_of_marks: &Vec<i32>) -> f32 {
+    let total_marks = calculate_total(list_of_marks);
+    return total_marks as f32 / list_of_marks.len() as f32;
+}
+
+fn display_student_marks(marks: &Vec<i32>, class_average: f32) {
     for (index, mark) in marks.into_iter().enumerate() {
         println!(
             "Student {}, Diference: {}",
             index + 1,
-            *mark as f64 - class_average
+            *mark as f32 - class_average
         );
     }
 }
